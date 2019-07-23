@@ -1,0 +1,52 @@
+"select * from userAccount where loginName = '" + name+"'";
+"select(loginPassword) from userAccount where loginName = '" + name+"'";
+
+"UPDATE userAccount SET loginName = '" + name +"' WHERE userID = " + userID;
+"UPDATE userAccount SET loginPassword = '" + password +"' WHERE userID = " + userID;
+"UPDATE " + type + "Account SET balance = balance + " + amount + " WHERE accountNumber ='" + accountNumber +"'";
+"UPDATE " + type + "Account SET balance = balance - " + amount + " WHERE accountNumber ='" +accountNumber +"'";
+"select * from debitAccount where userID = ?";
+"SELECT balance from debitAccount WHERE accountNumber = '" + accountNumber + "'";
+"SELECT balance, creditAmount from creditAccount WHERE accountNumber = '" + accountNumber + "'";
+"select * from creditAccount where userID = '" + userID + "'";
+"select cardID, cardNumber, debitCard.accountNumber from userAccount join debitAccount on debitAccount.userID = userAccount.userID join debitCard on debitCard.accountNumber = debitAccount.accountNumber where userAccount.userID = " + userID;
+"select cardID, cardNumber, creditCard.accountNumber from userAccount join creditAccount on creditAccount.userID = userAccount.userID join creditCard on creditCard.accountNumber = creditAccount.accountNumber where userAccount.userID = " + userID;
+        
+contentValues.put("loginName", name);
+contentValues.put("loginPassword",password);
+db.insert("userAccount",null,contentValues);
+
+        
+contentValues.put("accountNumber",accountNumber);
+contentValues.put("userID",userID);
+contentValues.put("balance",balance);
+db.insert("debitAccount",null,contentValues);
+
+contentValues.put("accountNumber",accountNumber);
+contentValues.put("userID",userID);
+contentValues.put("balance",balance);
+contentValues.put("creditAmount",creditAmount);
+db.insert("creditAccount",null,contentValues);
+
+contentValues.put("accountNumber",accountNumber);
+contentValues.put("userID",userID);
+contentValues.put("balance",balance);
+contentValues.put("savingsPercentage",savingsPer);
+db.insert("savingsAccount",null,contentValues);
+
+ContentValues contentValues = new ContentValues();
+contentValues.put("cardNumber",cardNumber);
+contentValues.put("accountNumber",accountNumber);
+db.insert("debitCard",null,contentValues);
+
+contentValues.put("cardNumber",cardNumber);
+contentValues.put("accountNumber",accountNumber);
+db.insert("creditCard",null,contentValues);
+
+db.delete("debitAccount", "accountNumber" + "=?", new String[]{accountName});
+db.delete("creditAccount", "accountNumber" + "=?", new String[]{accountName});
+db.delete("savingsAccount", "accountNumber" + "=?", new String[]{accountName});
+
+db.delete("creditCard", "cardNumber" + "=?", new String[]{name});
+db.delete("debitCard", "cardNumber" + "=?", new String[]{name});
+db.delete("userAccount", "userID" + "=?", new String[]{""+userID});
